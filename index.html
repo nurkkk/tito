@@ -1,81 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>VAT Calculator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    h1 {
-      text-align: center;
-    }
-    .container {
-      width: 300px;
-      margin: 0 auto;
-    }
-    .form-group {
-      margin-bottom: 10px;
-    }
-    .form-group label {
-      display: block;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 5px;
-    }
-    .form-group .result {
-      font-weight: bold;
-      margin-top: 5px;
-    }
-    .btn-calculate {
-      width: 100%;
-      padding: 10px;
-      background-color: #4CAF50;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-    .btn-calculate:hover {
-      background-color: #45a049;
-    }
-  </style>
+    <title>JavaScript Calculator</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        
+        #calculator {
+            width: 300px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 5px;
+            font-size: 16px;
+        }
+        
+        input[type="button"] {
+            width: 48%;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>VAT Calculator</h1>
-    <div class="form-group">
-      <label for="amount">Amount:</label>
-      <input type="number" id="amount" placeholder="Enter amount" />
+    <div id="calculator">
+        <input type="text" id="result" readonly>
+        <br>
+        <input type="button" value="1" onclick="appendNumber('1')">
+        <input type="button" value="2" onclick="appendNumber('2')">
+        <input type="button" value="3" onclick="appendNumber('3')">
+        <input type="button" value="+" onclick="appendOperator('+')">
+        <br>
+        <input type="button" value="4" onclick="appendNumber('4')">
+        <input type="button" value="5" onclick="appendNumber('5')">
+        <input type="button" value="6" onclick="appendNumber('6')">
+        <input type="button" value="-" onclick="appendOperator('-')">
+        <br>
+        <input type="button" value="7" onclick="appendNumber('7')">
+        <input type="button" value="8" onclick="appendNumber('8')">
+        <input type="button" value="9" onclick="appendNumber('9')">
+        <input type="button" value="*" onclick="appendOperator('*')">
+        <br>
+        <input type="button" value="0" onclick="appendNumber('0')">
+        <input type="button" value="." onclick="appendNumber('.')">
+        <input type="button" value="=" onclick="calculate()">
+        <input type="button" value="/" onclick="appendOperator('/')">
+        <br>
+        <input type="button" value="Clear" onclick="clearResult()">
     </div>
-    <div class="form-group">
-      <label for="vat">VAT (%):</label>
-      <input type="number" id="vat" placeholder="Enter VAT percentage" />
-    </div>
-    <button class="btn-calculate" onclick="calculateVAT()">Calculate</button>
-    <div class="form-group">
-      <label for="result">Total with VAT:</label>
-      <div id="result" class="result"></div>
-    </div>
-  </div>
 
-  <script>
-    function calculateVAT() {
-      var amountInput = document.getElementById('amount');
-      var vatInput = document.getElementById('vat');
-      var resultOutput = document.getElementById('result');
+    <script>
+        let resultElement = document.getElementById('result');
+        let currentExpression = '';
 
-      var amount = parseFloat(amountInput.value);
-      var vat = parseFloat(vatInput.value);
+        function appendNumber(number) {
+            currentExpression += number;
+            resultElement.value = currentExpression;
+        }
 
-      if (isNaN(amount) || isNaN(vat)) {
-        resultOutput.textContent = 'Invalid input. Please enter numeric values.';
-        return;
-      }
+        function appendOperator(operator) {
+            currentExpression += operator;
+            resultElement.value = currentExpression;
+        }
 
-      var total = amount + (amount * (vat / 100));
-      resultOutput.textContent = 'Total with VAT: ' + total.toFixed(2);
-    }
-  </script>
+        function calculate() {
+            try {
+                let result = eval(currentExpression);
+                resultElement.value = result;
+                currentExpression = '';
+            } catch (error) {
+                resultElement.value = 'Error';
+                currentExpression = '';
+            }
+        }
+
+        function clearResult() {
+            resultElement.value = '';
+            currentExpression = '';
+        }
+    </script>
 </body>
 </html>
+
 

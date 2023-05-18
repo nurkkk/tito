@@ -1,120 +1,81 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Servicio Médicor</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .header {
-            background-color: #f0f0f0;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #333333;
-        }
-        .nav {
-            list-style: none;
-            display: flex;
-        }
-        .nav li {
-            margin-left: 20px;
-        }
-        .nav a {
-            text-decoration: none;
-            color: #333333;
-        }
-        .banner {
-            background-image: url("https://images.unsplash.com/photo-1588776814546-1ffcf47267a6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bWVkaWNhbCUyMHNlcnZpY2V8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60");
-            background-size: cover;
-            background-position: center;
-            height: 500px;
-            display: flex;
-            align-items: center;
-        }
-        .banner h1 {
-            color: white;
-            font-size: 48px;
-            margin-left: 100px;
-        }
-        .services {
-            padding: 40px 0;
-        }
-        .services h2 {
-            text-align: center;
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-        .services ul {
-            list-style: none;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-        .services li {
-            width: 30%;
-            margin-bottom: 20px;
-        }
-        .services img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .services p {
-            text-align: center;
-            font-size: 18px;
-            margin-top: 10px;
-        }
-        .footer {
-            background-color: #333333;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center; 
-        }
-        .footer p {
-            color: white; 
-        }
-    </style>
+  <title>VAT Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      width: 300px;
+      margin: 0 auto;
+    }
+    .form-group {
+      margin-bottom: 10px;
+    }
+    .form-group label {
+      display: block;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 5px;
+    }
+    .form-group .result {
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    .btn-calculate {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-calculate:hover {
+      background-color: #45a049;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-           <div class="logo">Servicio Médico</div>
-           <ul class="nav">
-               <li><a href="#">Inicio</a></li>
-               <li><a href="#">Nosotros</a></li>
-               <li><a href="#">Servicios</a></li>
-               <li><a href="#">Contacto</a></li>
-           </ul>
-       </div>
-       <div class="banner">
-           <h1>La saludd es lo primero</h1>
-       </div>
-       <div class="services">
-           <h2>Nuestros serviciosss</h2>
-           <ul>
-               <li>
-                   <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bWVkaWNhbCUyMGNvbnN1bHRhdGlvbnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" alt="Consulta médica">
-                   <p>Consulta médica</p>
-               </li>
-           </ul>
-       </div>
+  <div class="container">
+    <h1>VAT Calculator</h1>
+    <div class="form-group">
+      <label for="amount">Amount:</label>
+      <input type="number" id="amount" placeholder="Enter amount" />
     </div>
-    <div class="footer">
-        <p>© 2023 Servicio Médico. Todos los derechos reservados.</p>
+    <div class="form-group">
+      <label for="vat">VAT (%):</label>
+      <input type="number" id="vat" placeholder="Enter VAT percentage" />
     </div>
+    <button class="btn-calculate" onclick="calculateVAT()">Calculate</button>
+    <div class="form-group">
+      <label for="result">Total with VAT:</label>
+      <div id="result" class="result"></div>
+    </div>
+  </div>
+
+  <script>
+    function calculateVAT() {
+      var amountInput = document.getElementById('amount');
+      var vatInput = document.getElementById('vat');
+      var resultOutput = document.getElementById('result');
+
+      var amount = parseFloat(amountInput.value);
+      var vat = parseFloat(vatInput.value);
+
+      if (isNaN(amount) || isNaN(vat)) {
+        resultOutput.textContent = 'Invalid input. Please enter numeric values.';
+        return;
+      }
+
+      var total = amount + (amount * (vat / 100));
+      resultOutput.textContent = 'Total with VAT: ' + total.toFixed(2);
+    }
+  </script>
 </body>
 </html>
+

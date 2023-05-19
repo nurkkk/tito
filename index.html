@@ -1,39 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Lista de Tareas</title>
+  <title>Juego de Memoria</title>
   <style>
-    .completed {
-      text-decoration: line-through;
+    .card {
+      width: 100px;
+      height: 100px;
+      background-color: lightblue;
+      display: inline-block;
+      margin: 5px;
+      cursor: pointer;
     }
   </style>
   <script>
-    function agregarTarea() {
-      var tarea = document.getElementById("nuevaTarea").value;
-      var lista = document.getElementById("listaTareas");
-      
-      if (tarea !== "") {
-        var nuevaTarea = document.createElement("li");
-        nuevaTarea.innerHTML = tarea + ' <button onclick="completarTarea(this)">Completar</button> <button onclick="eliminarTarea(this)">Eliminar</button>';
-        lista.appendChild(nuevaTarea);
-        document.getElementById("nuevaTarea").value = "";
+    var cartas = ["🌸", "🌺", "🌼", "🌻", "🌷", "🌹", "🌿", "🍀"];
+    var cartasBarajadas = [];
+
+    function iniciarJuego() {
+      cartasBarajadas = cartas.concat(cartas); // Duplica las cartas para formar parejas
+      cartasBarajadas.sort(() => Math.random() - 0.5); // Baraja las cartas de forma aleatoria
+      mostrarTablero();
+    }
+
+    function mostrarTablero() {
+      var tablero = document.getElementById("tablero");
+      tablero.innerHTML = ""; // Reinicia el tablero
+
+      for (var i = 0; i < cartasBarajadas.length; i++) {
+        var carta = document.createElement("div");
+        carta.className = "card";
+        carta.dataset.valor = cartasBarajadas[i];
+        carta.textContent = "?";
+        carta.addEventListener("click", voltearCarta);
+        tablero.appendChild(carta);
       }
     }
-    
-    function completarTarea(elemento) {
-      elemento.parentNode.classList.toggle("completed");
-    }
-    
-    function eliminarTarea(elemento) {
-      elemento.parentNode.remove();
+
+    function voltearCarta() {
+      var carta = this;
+      carta.textContent = carta.dataset.valor;
+      carta.removeEventListener("click", voltearCarta);
+      carta.style.backgroundColor = "white";
+
+      var cartasVolteadas = document.querySelectorAll(".card:not([style='background-color: white;'])");
+      if (cartasVolteadas.length === 2) {
+        var carta1 = cartasVolteadas[0];
+        var carta2 = cartasVolteadas[1];
+
+        if (carta1.dataset.valor === carta2.dataset.valor) {
+          carta1.style.backgroundColor = "green";
+          carta2.style.backgroundColor = "green";
+          carta1.removeEventListener("click", voltearCarta);
+          carta2.removeEventListener("click", voltearCarta);
+        } else {
+          setTimeout(function() {
+            carta1.textContent = "?";
+            carta2.textContent = "?";
+            carta1.addEventListener("click", voltearCarta);
+            carta2.addEventListener("click", voltearCarta);
+            carta1.style.backgroundColor = "lightblue";
+            carta2.style.backgroundColor = "lightblue";
+          }, 1000);
+        }
+      }
     }
   </script>
 </head>
 <body>
-  <h1>Lista de Tareas</h1>
-  <input type="text" id="nuevaTarea" placeholder="Agregar tarea">
-  <button onclick="agregarTarea()">Agregar</button>
-  <ul id="listaTareas"></ul>
+  <h1>Juego de Memoria</h1>
+  <button onclick="iniciarJuego()">Iniciar Juego</button>
+  <div id="tablero"></div>
 </body>
 </html>
 

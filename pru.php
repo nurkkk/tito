@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ejemplo PHP</title>
+    <title>Ejemplor PHP</title>
 </head>
 <body>
     <?php

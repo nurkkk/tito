@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Ejemplonnn PHP</title>
+  <title>Página Web con JavaScript</title>
+  <script>
+    function saludar() {
+      var nombre = document.getElementById("nombre").value;
+      var saludo = "¡Hola, " + nombre + "!";
+      document.getElementById("resultado").textContent = saludo;
+    }
+  </script>
 </head>
 <body>
-    <?php
-        echo "Hola, mundo!";
-    ?>
+  <h1>Saludo Personalizado</h1>
+  <label for="nombre">Nombre:</label>
+  <input type="text" id="nombre">
+  <button onclick="saludar()">Saludar</button>
+  <p id="resultado"></p>
 </body>
 </html>
+

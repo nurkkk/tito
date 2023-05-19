@@ -1,21 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Página Web con JavaScript</title>
+  <title>Lista de Tareas</title>
+  <style>
+    .completed {
+      text-decoration: line-through;
+    }
+  </style>
   <script>
-    function saludar() {
-      var nombre = document.getElementById("nombre").value;
-      var saludo = "¡Hola, " + nombre + "!";
-      document.getElementById("resultado").textContent = saludo;
+    function agregarTarea() {
+      var tarea = document.getElementById("nuevaTarea").value;
+      var lista = document.getElementById("listaTareas");
+      
+      if (tarea !== "") {
+        var nuevaTarea = document.createElement("li");
+        nuevaTarea.innerHTML = tarea + ' <button onclick="completarTarea(this)">Completar</button> <button onclick="eliminarTarea(this)">Eliminar</button>';
+        lista.appendChild(nuevaTarea);
+        document.getElementById("nuevaTarea").value = "";
+      }
+    }
+    
+    function completarTarea(elemento) {
+      elemento.parentNode.classList.toggle("completed");
+    }
+    
+    function eliminarTarea(elemento) {
+      elemento.parentNode.remove();
     }
   </script>
 </head>
 <body>
-  <h1>Saludo Personalizado</h1>
-  <label for="nombre">Nombre:</label>
-  <input type="text" id="nombre">
-  <button onclick="saludar()">Saludar</button>
-  <p id="resultado"></p>
+  <h1>Lista de Tareas</h1>
+  <input type="text" id="nuevaTarea" placeholder="Agregar tarea">
+  <button onclick="agregarTarea()">Agregar</button>
+  <ul id="listaTareas"></ul>
 </body>
 </html>
+
 

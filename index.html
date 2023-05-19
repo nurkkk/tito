@@ -10,11 +10,17 @@
       display: inline-block;
       margin: 5px;
       cursor: pointer;
+      font-size: 30px;
+      text-align: center;
+      line-height: 100px;
     }
   </style>
   <script>
     var cartas = ["🌸", "🌺", "🌼", "🌻", "🌷", "🌹", "🌿", "🍀"];
     var cartasBarajadas = [];
+    var carta1 = null;
+    var carta2 = null;
+    var bloquearTablero = false;
 
     function iniciarJuego() {
       cartasBarajadas = cartas.concat(cartas); // Duplica las cartas para formar parejas
@@ -25,6 +31,7 @@
     function mostrarTablero() {
       var tablero = document.getElementById("tablero");
       tablero.innerHTML = ""; // Reinicia el tablero
+      bloquearTablero = false;
 
       for (var i = 0; i < cartasBarajadas.length; i++) {
         var carta = document.createElement("div");
@@ -37,29 +44,38 @@
     }
 
     function voltearCarta() {
+      if (bloquearTablero) {
+        return;
+      }
+
       var carta = this;
       carta.textContent = carta.dataset.valor;
-      carta.removeEventListener("click", voltearCarta);
-      carta.style.backgroundColor = "white";
 
-      var cartasVolteadas = document.querySelectorAll(".card:not([style='background-color: white;'])");
-      if (cartasVolteadas.length === 2) {
-        var carta1 = cartasVolteadas[0];
-        var carta2 = cartasVolteadas[1];
+      if (carta1 === null) {
+        carta1 = carta;
+        carta.removeEventListener("click", voltearCarta);
+      } else if (carta2 === null) {
+        if (carta === carta1) {
+          return;
+        }
+        carta2 = carta;
+        carta.removeEventListener("click", voltearCarta);
 
         if (carta1.dataset.valor === carta2.dataset.valor) {
           carta1.style.backgroundColor = "green";
           carta2.style.backgroundColor = "green";
-          carta1.removeEventListener("click", voltearCarta);
-          carta2.removeEventListener("click", voltearCarta);
+          carta1 = null;
+          carta2 = null;
         } else {
+          bloquearTablero = true;
           setTimeout(function() {
             carta1.textContent = "?";
             carta2.textContent = "?";
             carta1.addEventListener("click", voltearCarta);
             carta2.addEventListener("click", voltearCarta);
-            carta1.style.backgroundColor = "lightblue";
-            carta2.style.backgroundColor = "lightblue";
+            carta1 = null;
+            carta2 = null;
+            bloquearTablero = false;
           }, 1000);
         }
       }
@@ -72,5 +88,6 @@
   <div id="tablero"></div>
 </body>
 </html>
+
 
 

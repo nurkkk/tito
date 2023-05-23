@@ -1,91 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Juego de Memoria</title>
-  <style>
-    .card {
-      width: 100px;
-      height: 100px;
-      background-color: lightblue;
-      display: inline-block;
-      margin: 5px;
-      cursor: pointer;
-      font-size: 30px;
-      text-align: center;
-      line-height: 100px;
-    }
-  </style>
+  <title>Guardar y descargar archivos</title>
+</head>
+<body>
+  <input type="file" id="file-input">
+  <button onclick="guardarArchivo()">Guardar en la página web</button>
+  <button onclick="descargarArchivo()">Descargar en el disco duro</button>
+
   <script>
-    var cartas = ["🌸", "🌺", "🌼", "🌻", "🌷", "🌹", "🌿", "🍀"];
-    var cartasBarajadas = [];
-    var carta1 = null;
-    var carta2 = null;
-    var bloquearTablero = false;
+    var archivo;
 
-    function iniciarJuego() {
-      cartasBarajadas = cartas.concat(cartas); // Duplica las cartas para formar parejas
-      cartasBarajadas.sort(() => Math.random() - 0.5); // Baraja las cartas de forma aleatoria
-      mostrarTablero();
-    }
-
-    function mostrarTablero() {
-      var tablero = document.getElementById("tablero");
-      tablero.innerHTML = ""; // Reinicia el tablero
-      bloquearTablero = false;
-
-      for (var i = 0; i < cartasBarajadas.length; i++) {
-        var carta = document.createElement("div");
-        carta.className = "card";
-        carta.dataset.valor = cartasBarajadas[i];
-        carta.textContent = "?";
-        carta.addEventListener("click", voltearCarta);
-        tablero.appendChild(carta);
+    function guardarArchivo() {
+      var input = document.getElementById('file-input');
+      archivo = input.files[0];
+      if (archivo) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var contenido = e.target.result;
+          localStorage.setItem('archivoGuardado', contenido);
+          console.log('Archivo guardado en la página web.');
+        }
+        reader.readAsText(archivo);
       }
     }
 
-    function voltearCarta() {
-      if (bloquearTablero) {
-        return;
-      }
-
-      var carta = this;
-      carta.textContent = carta.dataset.valor;
-
-      if (carta1 === null) {
-        carta1 = carta;
-        carta.removeEventListener("click", voltearCarta);
-      } else if (carta2 === null) {
-        if (carta === carta1) {
-          return;
-        }
-        carta2 = carta;
-        carta.removeEventListener("click", voltearCarta);
-
-        if (carta1.dataset.valor === carta2.dataset.valor) {
-          carta1.style.backgroundColor = "green";
-          carta2.style.backgroundColor = "green";
-          carta1 = null;
-          carta2 = null;
-        } else {
-          bloquearTablero = true;
-          setTimeout(function() {
-            carta1.textContent = "?";
-            carta2.textContent = "?";
-            carta1.addEventListener("click", voltearCarta);
-            carta2.addEventListener("click", voltearCarta);
-            carta1 = null;
-            carta2 = null;
-            bloquearTablero = false;
-          }, 1000);
-        }
+    function descargarArchivo() {
+      var contenido = localStorage.getItem('archivoGuardado');
+      if (contenido) {
+        var nombreArchivo = archivo.name;
+        var enlace = document.createElement('a');
+        enlace.href = 'data:application/octet-stream,' + encodeURIComponent(contenido);
+        enlace.download = nombreArchivo;
+        enlace.click();
+        console.log('Archivo descargado en el disco duro.');
+      } else {
+        console.log('No hay archivo guardado en la página web.');
       }
     }
   </script>
-</head>
-<body>
-  <h1>Juego de Memoria</h1>
-  <button onclick="iniciarJuego()">Iniciar Juego</button>
-  <div id="tablero"></div>
 </body>
 </html>
 
